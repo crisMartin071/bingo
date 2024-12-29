@@ -1,0 +1,105 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ */
+package bingo;
+
+import java.util.Scanner;
+
+/**
+ *
+ * @author PC01
+ */
+public class Bingo {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        String[][] bingo= new String[9][10];
+        String respuesta= "";
+        Scanner scanner = new Scanner(System.in);
+        Boolean condicion = false;
+        int cont= 0;
+        
+        do{
+            if(condicion == true){
+                generadorNum(bingo);
+                lectorBingo(bingo);
+            }
+            
+            if(condicion == false){
+                bingo = inicializadorTabla(bingo);
+                lectorBingo(bingo);
+                condicion = true;
+            }
+            
+            if(cont == 90){
+                cont++;
+            }else{
+                System.out.println("");
+                System.out.println("¿Desea seguir? (S/N)");
+                respuesta= scanner.nextLine();
+                respuesta= respuesta.toUpperCase();
+                cont++;
+            }
+            
+        }while(!respuesta.equalsIgnoreCase("N") && cont <= 90);
+            System.out.println("Fin del programa");
+    }
+    
+    /* Method that prepare the table*/
+    
+    public static String[][] inicializadorTabla(String[][] bingo){
+        for(int i = 0; i < bingo.length; i++){
+            for(int i2 = 0; i2 < bingo[i].length; i2++){
+                bingo[i][i2]= "-- ";
+            }
+        }
+        return bingo;
+    }
+    
+    /* Method which generate a number at random position*/
+    
+    private static String[][] generadorNum(String[][] bingo){
+        int num, fila= 0, columna= 0;
+        Boolean freeSpace = false;
+        
+        while(freeSpace == false){
+            fila = (int) (Math.random() * 9);
+            columna = (int) (Math.random() * 10);
+            num = (int) (Math.random()*91);
+
+            String numResult= String.valueOf(num);
+            
+            Boolean numIgual = false;
+            
+            for(int i = 0; i < bingo.length; i++){
+                for(int i2 = 0; i2 < bingo[i].length; i2++){
+                    if(bingo[i][i2].equals(numResult+" ")){
+                        numIgual = true;
+                    }
+                }
+            }
+            
+            if(numIgual == false){
+                if(bingo[fila][columna] == "-- "){
+                    bingo[fila][columna] = numResult+" ";
+                    freeSpace = true;
+                }
+            }
+        }
+        return bingo;      
+    }
+    
+    /* Methos which show the numbers generates*/
+    
+    private static void lectorBingo(String[][] bingo){
+        for(int i = 0; i < bingo.length; i++){
+            for(int i2 = 0; i2 < bingo[i].length; i2++){
+                System.out.print(bingo[i][i2]);
+            }
+            System.out.println("");
+        }
+    }
+}
